@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Kerja Karang Taruna RW 010 Cilincing — Kabinet Akselerasi Karya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --navy:#0B2A5B;
+  --navy-2:#123B7A;
+  --blue:#2F6FED;
+  --blue-light:#5C8CF2;
+  --sky:#EEF3FE;
+  --sky-2:#DCE7FD;
+  --gold:#C9971F;
+  --gold-light:#F4E3B8;
+  --white:#FFFFFF;
+  --ink:#0F1B2D;
+  --slate:#55637A;
+  --slate-light:#8493AC;
+  --line:#DCE4F0;
+  --radius:14px;
+  --shadow:0 8px 30px rgba(11,42,91,0.08);
+  --shadow-lg:0 20px 60px rgba(11,42,91,0.16);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  color:var(--ink);
+  background:var(--white);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:'Lexend',sans-serif;color:var(--navy);letter-spacing:-0.01em;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+img{max-width:100%;display:block;}
+.container{max-width:1180px;margin:0 auto;padding:0 28px;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:14px;
+}
+.eyebrow::before{content:'';width:18px;height:2px;background:var(--gold);border-radius:2px;}
+.section{padding:96px 0;}
+.section-alt{background:var(--sky);}
+.section-title{font-size:clamp(28px,4vw,40px);font-weight:700;margin-bottom:16px;}
+.section-sub{color:var(--slate);font-size:16.5px;max-width:640px;margin-bottom:48px;}
+
+/* Chevron signature motif */
+.chev{display:inline-block;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid currentColor;}
+.chev-row{display:inline-flex;gap:3px;color:var(--gold);vertical-align:middle;}
+.chev-row span{opacity:1;}
+.chev-row span:nth-child(2){opacity:.55;}
+.chev-row span:nth-child(3){opacity:.3;}
+.chev-divider{position:relative;height:46px;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:10px;}
+.chev-divider .chev{width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:14px solid var(--sky-2);}
+.chev-divider .chev.on{border-left-color:var(--gold);}
+
+/* NAV */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(255,255,255,0.88);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  transition:box-shadow .3s ease;
+}
+#nav.scrolled{box-shadow:0 6px 24px rgba(11,42,91,0.08);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{width:44px;height:44px;flex-shrink:0;}
+.brand-text{line-height:1.2;}
+.brand-text b{display:block;font-family:'Lexend',sans-serif;font-weight:700;font-size:14.5px;color:var(--navy);}
+.brand-text span{font-size:11px;color:var(--slate);font-weight:600;letter-spacing:0.03em;}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-links button{
+  padding:10px 15px;font-size:14px;font-weight:600;color:var(--slate);border-radius:8px;
+  transition:all .2s ease;position:relative;
+}
+.nav-links button:hover{color:var(--navy);background:var(--sky);}
+.nav-links button.active{color:var(--navy);}
+.nav-links button.active::after{
+  content:'';position:absolute;left:15px;right:15px;bottom:2px;height:2px;background:var(--gold);border-radius:2px;
+}
+.nav-cta{display:flex;align-items:center;gap:10px;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:9px;font-weight:600;font-size:14px;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,background .25s ease;
+}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 6px 18px rgba(11,42,91,0.25);}
+.btn-primary:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 10px 24px rgba(47,111,237,0.3);}
+.btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line);}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);background:var(--sky);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{background:#B4860F;transform:translateY(-2px);}
+.btn .chev{transition:transform .25s ease;}
+.btn:hover .chev{transform:translateX(4px);}
+.admin-toggle{
+  width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--slate-light);transition:all .2s ease;
+}
+.admin-toggle.on{background:var(--gold);border-color:var(--gold);color:#fff;}
+.burger{display:none;width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);align-items:center;justify-content:center;}
+
+/* MOBILE NAV */
+@media(max-width:980px){
+  .nav-links{position:fixed;top:73px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;padding:10px 20px 20px;border-bottom:1px solid var(--line);box-shadow:var(--shadow-lg);transform:translateY(-130%);opacity:0;transition:all .3s ease;max-height:70vh;overflow-y:auto;}
+  .nav-links.open{transform:translateY(0);opacity:1;}
+  .nav-links button{text-align:left;width:100%;padding:13px 15px;}
+  .burger{display:flex;}
+  .nav-cta .btn-primary span.label{display:none;}
+}
+
+/* VIEWS */
+.view{display:none;animation:fadeUp .5s ease both;}
+.view.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* HERO */
+.hero{
+  position:relative;padding:168px 0 100px;overflow:hidden;
+  background:radial-gradient(1100px 620px at 82% -10%, #1A4590 0%, var(--navy) 46%, #081D42 100%);
+  color:#fff;
+}
+.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:60px;align-items:center;position:relative;z-index:2;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);
+  padding:8px 16px;border-radius:999px;font-size:12.5px;font-weight:600;color:#DCE7FD;margin-bottom:22px;
+}
+.hero-badge b{color:var(--gold-light);}
+.hero h1{font-size:clamp(34px,4.6vw,54px);color:#fff;line-height:1.12;font-weight:800;margin-bottom:10px;}
+.hero h1 .accent{color:var(--gold-light);}
+.hero-tagline{font-family:'Source Serif 4',serif;font-style:italic;font-size:18.5px;color:#B9CBF2;margin:16px 0 22px;max-width:520px;}
+.hero-desc{color:#C7D5F4;font-size:16px;max-width:520px;margin-bottom:34px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.hero-visual{position:relative;height:420px;}
+.hero-illus{position:absolute;inset:0;}
+.hero-stats-float{
+  position:absolute;bottom:-18px;left:-10px;background:#fff;border-radius:14px;padding:18px 22px;box-shadow:var(--shadow-lg);
+  display:flex;gap:26px;color:var(--ink);
+}
+.hero-stats-float .n{font-family:'Lexend',sans-serif;font-weight:800;font-size:23px;color:var(--navy);}
+.hero-stats-float .l{font-size:11.5px;color:var(--slate);font-weight:600;}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr;}.hero-visual{height:280px;order:-1;}.hero{padding-top:130px;}}
+
+/* SAMBUTAN */
+.sambutan{display:grid;grid-template-columns:280px 1fr;gap:52px;align-items:center;}
+.sambutan-photo{
+  width:100%;aspect-ratio:1;border-radius:20px;background:linear-gradient(155deg,var(--navy),var(--blue));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Lexend';font-weight:800;font-size:54px;
+  box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+}
+.sambutan-photo::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(120deg,transparent,transparent 18px,rgba(255,255,255,.06) 18px,rgba(255,255,255,.06) 20px);}
+.sambutan-quote{font-family:'Source Serif 4',serif;font-style:italic;font-size:19px;color:var(--ink);line-height:1.65;position:relative;padding-left:26px;border-left:3px solid var(--gold);}
+.sambutan-name{margin-top:20px;font-weight:700;color:var(--navy);font-size:16px;}
+.sambutan-role{color:var(--slate);font-size:13.5px;}
+@media(max-width:760px){.sambutan{grid-template-columns:1fr;}.sambutan-photo{max-width:220px;margin:0 auto;}}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.stat-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;position:relative;overflow:hidden;
+}
+.stat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--blue-light);}
+.stat-card .icon{width:38px;height:38px;border-radius:9px;background:var(--sky);display:flex;align-items:center;justify-content:center;color:var(--blue);margin-bottom:14px;}
+.stat-num{font-family:'Lexend',sans-serif;font-weight:800;font-size:32px;color:var(--navy);}
+.stat-label{color:var(--slate);font-size:13.5px;font-weight:600;margin-top:4px;}
+.stat-num input{width:100%;font:inherit;font-weight:800;font-size:32px;color:var(--navy);border:1.5px dashed var(--gold);border-radius:6px;padding:2px 6px;background:var(--gold-light);}
+@media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* PROGRAM CARDS */
+.program-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.program-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;
+  transition:all .28s cubic-bezier(.2,.8,.2,1);
+}
+.program-card:hover{border-color:transparent;box-shadow:var(--shadow-lg);transform:translateY(-6px);}
+.program-icon{width:46px;height:46px;border-radius:11px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.program-card h4{font-size:16.5px;margin-bottom:8px;}
+.program-card p{font-size:14px;color:var(--slate);}
+@media(max-width:900px){.program-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.program-grid{grid-template-columns:1fr;}}
+
+/* PROFIL PAGE */
+.page-hero{
+  background:linear-gradient(180deg,var(--sky) 0%, #fff 100%);
+  padding:150px 0 60px;border-bottom:1px solid var(--line);
+}
+.page-hero h1{font-size:clamp(30px,4vw,44px);}
+.page-hero p{color:var(--slate);max-width:600px;margin-top:12px;font-size:16px;}
+.crumb{font-size:13px;color:var(--slate-light);font-weight:600;margin-bottom:14px;}
+.crumb b{color:var(--blue);}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+.philosophy-box{background:var(--navy);color:#fff;border-radius:20px;padding:44px;position:relative;overflow:hidden;}
+.philosophy-box::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.philosophy-box h3{color:#fff;font-size:22px;margin-bottom:18px;}
+.philosophy-box p{color:#C7D5F4;font-size:15px;line-height:1.75;margin-bottom:14px;}
+.philosophy-box .word{color:var(--gold-light);font-weight:700;}
+
+.vm-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px;}
+.vm-card h3{font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.vm-card p{color:var(--slate);font-size:15px;}
+.misi-list{list-style:none;margin-top:14px;}
+.misi-list li{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink);}
+.misi-list li:first-child{border-top:none;}
+.misi-num{flex-shrink:0;width:26px;height:26px;border-radius:7px;background:var(--sky);color:var(--blue);font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center;font-family:'Lexend';}
+
+/* KEGIATAN */
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.chip{padding:9px 18px;border-radius:999px;border:1.5px solid var(--line);font-size:13.5px;font-weight:600;color:var(--slate);transition:all .2s ease;}
+.chip:hover{border-color:var(--blue-light);color:var(--blue);}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.kegiatan-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:all .28s ease;}
+.kegiatan-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-5px);}
+.kegiatan-thumb{height:150px;background:linear-gradient(135deg,var(--blue),var(--navy));position:relative;display:flex;align-items:end;padding:14px;}
+.kegiatan-thumb span{background:rgba(255,255,255,0.92);color:var(--navy);font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;}
+.kegiatan-body{padding:20px;}
+.kegiatan-body h4{font-size:15.5px;margin-bottom:8px;}
+.kegiatan-meta{display:flex;gap:14px;font-size:12.5px;color:var(--slate-light);margin-bottom:10px;font-weight:600;}
+.kegiatan-body p{font-size:13.5px;color:var(--slate);}
+@media(max-width:960px){.card-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:620px){.card-grid{grid-template-columns:1fr;}}
+
+/* TIMELINE */
+.timeline{position:relative;margin-top:60px;padding-left:26px;border-left:2px solid var(--sky-2);}
+.timeline-item{position:relative;padding-bottom:34px;padding-left:26px;}
+.timeline-item::before{content:'';position:absolute;left:-33.5px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:3px solid #fff;box-shadow:0 0 0 2px var(--gold);}
+.timeline-item .tdate{font-size:12.5px;color:var(--blue);font-weight:700;margin-bottom:4px;}
+.timeline-item h5{font-size:15px;margin-bottom:4px;}
+.timeline-item p{font-size:13.5px;color:var(--slate);}
+
+/* BERITA */
+.news-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:all .28s ease;cursor:pointer;}
+.news-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-5px);}
+.news-thumb{height:140px;background:linear-gradient(135deg,var(--sky-2),var(--sky));position:relative;}
+.news-thumb .cat{position:absolute;top:12px;left:12px;background:var(--gold);color:#fff;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px;}
+.news-body{padding:19px 20px;}
+.news-date{font-size:12px;color:var(--slate-light);font-weight:600;margin-bottom:8px;}
+.news-body h4{font-size:15px;margin-bottom:8px;line-height:1.4;}
+.news-body p{font-size:13.5px;color:var(--slate);margin-bottom:12px;}
+.news-link{font-size:13px;font-weight:700;color:var(--blue);display:inline-flex;align-items:center;gap:5px;}
+
+/* STRUKTUR */
+.org-level{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-bottom:8px;position:relative;}
+.org-connector{width:2px;height:26px;background:var(--sky-2);margin:0 auto;}
+.org-card{
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-align:center;min-width:170px;
+  transition:all .25s ease;
+}
+.org-card:hover{border-color:var(--blue-light);box-shadow:var(--shadow);transform:translateY(-3px);}
+.org-card .avatar{width:50px;height:50px;border-radius:50%;background:var(--sky);color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Lexend';font-weight:700;font-size:16px;margin:0 auto 10px;}
+.org-card.core .avatar{background:var(--navy);color:#fff;}
+.org-card .oname{font-size:13.5px;font-weight:700;color:var(--navy);}
+.org-card .orole{font-size:11.5px;color:var(--slate);margin-top:2px;}
+.org-card.pembina .avatar{background:var(--gold);color:#fff;}
+.majelis-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;max-width:640px;margin:0 auto;}
+.majelis-box h5{font-size:13px;text-align:center;color:var(--slate);font-weight:700;margin-bottom:14px;letter-spacing:.03em;text-transform:uppercase;}
+.majelis-names{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.majelis-names span{background:var(--sky);color:var(--navy);font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:999px;}
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px;}
+.dept-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;gap:14px;align-items:center;}
+.dept-card .avatar{width:42px;height:42px;flex-shrink:0;border-radius:10px;background:var(--sky);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'Lexend';font-size:14px;}
+.dept-card.open{opacity:.6;border-style:dashed;}
+.dept-card .dname{font-size:13.5px;font-weight:700;color:var(--navy);}
+.dept-card .drole{font-size:11.5px;color:var(--slate);}
+@media(max-width:900px){.dept-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.dept-grid{grid-template-columns:1fr;}.org-card{min-width:135px;padding:13px 12px;}}
+
+/* STATISTIK PAGE */
+.chart-panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;}
+.chart-panel h4{font-size:15px;margin-bottom:18px;}
+.chart-wrap{position:relative;height:280px;}
+.range-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:40px;}
+.range-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 14px;text-align:center;}
+.range-card .rn{font-family:'Lexend';font-weight:800;font-size:22px;color:var(--navy);}
+.range-card .rl{font-size:11.5px;color:var(--slate);margin-top:4px;font-weight:600;}
+@media(max-width:900px){.range-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.range-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* TRANSPARANSI / ARCHIVE */
+.accordion{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;background:#fff;}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:19px 24px;cursor:pointer;}
+.acc-head h4{font-size:15px;}
+.acc-head .plus{width:26px;height:26px;border-radius:7px;background:var(--sky);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;transition:transform .25s ease;flex-shrink:0;}
+.accordion.open .acc-head .plus{transform:rotate(45deg);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.accordion.open .acc-body{max-height:400px;}
+.acc-body-in{padding:0 24px 22px;color:var(--slate);font-size:14px;line-height:1.7;}
+
+.archive-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.archive-item{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:all .2s ease;}
+.archive-item:hover{border-color:var(--blue-light);box-shadow:var(--shadow);}
+.archive-item .fic{width:40px;height:40px;border-radius:9px;background:var(--sky);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.archive-item .fname{font-size:13.5px;font-weight:700;color:var(--navy);}
+.archive-item .fmeta{font-size:11.5px;color:var(--slate-light);}
+@media(max-width:600px){.archive-list{grid-template-columns:1fr;}}
+
+/* MEMBERSHIP */
+.form-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:40px;max-width:640px;margin:0 auto;box-shadow:var(--shadow);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:7px;}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;font:inherit;font-size:14px;color:var(--ink);
+  transition:border-color .2s ease;background:#fff;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+
+/* KONTAK */
+.contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;}
+.contact-info-card{background:var(--navy);color:#fff;border-radius:20px;padding:36px;}
+.contact-info-card h3{color:#fff;font-size:19px;margin-bottom:22px;}
+.contact-line{display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.12);}
+.contact-line:first-of-type{border-top:none;}
+.contact-line .ic{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-line b{display:block;font-size:13.5px;}
+.contact-line span{font-size:12.5px;color:#B9CBF2;}
+.social-row{display:flex;gap:10px;margin-top:24px;}
+.social-row a{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background .2s ease;}
+.social-row a:hover{background:var(--gold);}
+.map-box{border-radius:16px;overflow:hidden;border:1px solid var(--line);height:220px;margin-top:20px;}
+.map-box iframe{width:100%;height:100%;border:0;}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+
+/* FOOTER */
+footer{background:#081D42;color:#B9CBF2;padding:64px 0 26px;}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:44px;}
+.footer-brand{display:flex;gap:12px;align-items:center;margin-bottom:14px;}
+.footer-brand b{color:#fff;font-family:'Lexend';font-size:15px;}
+footer p{font-size:13.5px;color:#8FA6D6;max-width:280px;}
+footer h5{color:#fff;font-size:13px;margin-bottom:16px;letter-spacing:.03em;}
+footer ul{list-style:none;}
+footer ul li{margin-bottom:10px;}
+footer ul a{font-size:13.5px;color:#9FB4DE;transition:color .2s ease;}
+footer ul a:hover{color:var(--gold-light);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#7690C4;}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;}}
+
+/* toast */
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--navy);color:#fff;padding:15px 26px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);z-index:2000;transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:10px;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* admin bar */
+#adminbar{position:fixed;bottom:0;left:0;right:0;background:var(--gold);color:#fff;padding:12px 28px;font-size:13px;font-weight:600;z-index:999;display:none;align-items:center;justify-content:center;gap:8px;text-align:center;}
+#adminbar.show{display:flex;}
+
+@media(max-width:900px){.two-col{grid-template-columns:1fr;}.org-level{gap:10px;}}
+@media(max-width:760px){.section{padding:64px 0;}}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+<div id="adminbar">⚙ Mode Admin aktif — angka statistik &amp; data dapat diedit langsung. Perubahan tersimpan untuk sesi ini saja.</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="brand" onclick="go('beranda')" style="cursor:pointer">
+      <svg class="brand-mark" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="22" fill="#0B2A5B"/><path d="M14 28L21 15L28 28" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" fill="none"/><path d="M16 24H26" stroke="#C9971F" stroke-width="2.4"/></svg>
+      <div class="brand-text"><b>Unit Kerja Karang Taruna RW 010</b><span>Kel. Cilincing · Akselerasi Karya</span></div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <button onclick="go('beranda')" data-v="beranda">Beranda</button>
+      <button onclick="go('profil')" data-v="profil">Profil</button>
+      <button onclick="go('kegiatan')" data-v="kegiatan">Kegiatan</button>
+      <button onclick="go('berita')" data-v="berita">Berita</button>
+      <button onclick="go('struktur')" data-v="struktur">Struktur</button>
+      <button onclick="go('statistik')" data-v="statistik">Statistik</button>
+      <button onclick="go('transparansi')" data-v="transparansi">Transparansi</button>
+      <button onclick="go('kontak')" data-v="kontak">Kontak</button>
+    </div>
+    <div class="nav-cta">
+      <button class="admin-toggle" id="adminToggle" onclick="toggleAdmin()" title="Mode Admin">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 005 18.06 1.65 1.65 0 003.09 15H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9.6a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009.6 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09c0 .69.4 1.3 1 1.51.36.15.77.1 1.09-.13l.06-.06a2 2 0 112.83 2.83l-.06.06c-.24.24-.35.58-.33.92"/></svg>
+      </button>
+      <button class="btn btn-primary" onclick="go('membership')"><span class="label">Bergabung</span> <i class="chev"></i></button>
+      <button class="burger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B2A5B" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= BERANDA ================= -->
+<section class="view active" id="v-beranda">
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-badge"><span class="chev-row"><span class="chev"></span><span class="chev"></span><span class="chev"></span></span>Masa Bakti <b>2026 – 2029</b></div>
+        <h1>Karang Taruna RW. 010 <span class="accent">Cilincing</span></h1>
+        <h1 style="font-size:clamp(20px,2.6vw,28px);color:#DCE7FD;font-weight:600;margin-bottom:0;">Kabinet Akselerasi Karya</h1>
+        <p class="hero-tagline">"Bergerak Cepat, Berkarya Nyata, Berdampak Untuk Masyarakat"</p>
+        <p class="hero-desc">Unit Kerja Karang Taruna RW. 010 Kel. Cilincing. Organisasi kepemudaan yang profesional, adaptif, kolaboratif, dan berdampak nyata dalam membangun masyarakat yang mandiri, berdaya, dan sejahtera.</p>
+        <div class="hero-btns">
+          <button class="btn btn-gold" onclick="go('profil')">Tentang Kami <i class="chev"></i></button>
+          <button class="btn btn-ghost" style="border-color:rgba(255,255,255,.3);color:#fff" onclick="go('membership')">Bergabung Bersama Kami</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <svg class="hero-illus" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="210" cy="210" r="200" fill="url(#g1)" opacity="0.15"/>
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="420" y2="420"><stop stop-color="#5C8CF2"/><stop offset="1" stop-color="#C9971F"/></linearGradient></defs>
+          <rect x="70" y="190" width="60" height="150" rx="6" fill="#2F6FED" opacity="0.85"/>
+          <rect x="140" y="140" width="60" height="200" rx="6" fill="#5C8CF2" opacity="0.9"/>
+          <rect x="210" y="90" width="70" height="250" rx="6" fill="#fff"/>
+          <rect x="290" y="160" width="60" height="180" rx="6" fill="#2F6FED" opacity="0.85"/>
+          <g fill="#0B2A5B">
+            <rect x="222" y="110" width="14" height="14" rx="2"/><rect x="246" y="110" width="14" height="14" rx="2"/>
+            <rect x="222" y="140" width="14" height="14" rx="2"/><rect x="246" y="140" width="14" height="14" rx="2"/>
+            <rect x="222" y="170" width="14" height="14" rx="2"/><rect x="246" y="170" width="14" height="14" rx="2"/>
+            <rect x="222" y="200" width="14" height="14" rx="2"/><rect x="246" y="200" width="14" height="14" rx="2"/>
+          </g>
+          <path d="M40 340h360" stroke="#DCE7FD" stroke-width="2" opacity="0.3"/>
+          <path d="M150 60L165 30L180 60" stroke="#C9971F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+        </svg>
+        <div class="hero-stats-float">
+          <div><div class="n" id="fk1">6.049</div><div class="l">Total Penduduk</div></div>
+          <div><div class="n" id="fk2">1.240</div><div class="l">Pemuda Aktif</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Sambutan Ketua</div>
+      <div class="sambutan">
+        <div class="sambutan-photo">HDP</div>
+        <div>
+          <p class="sambutan-quote">"Karang Taruna merupakan wadah bagi generasi muda untuk bergerak, berkolaborasi, dan menciptakan karya nyata bagi masyarakat. Melalui Kabinet Akselerasi Karya, kami berkomitmen menghadirkan organisasi yang profesional, transparan, dan memberikan manfaat nyata bagi lingkungan RW 010 Cilincing."</p>
+          <div class="sambutan-name">Herdandi Dwi Putra, A.Md.Kom</div>
+          <div class="sambutan-role">Ketua Unit Kerja Karang Taruna RW 010 · Masa Bakti 2026–2029</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section section-alt">
+    <div class="container">
+      <div class="eyebrow">Data Lingkungan</div>
+      <h2 class="section-title">Statistik Masyarakat RW 010</h2>
+      <p class="section-sub">Gambaran umum demografi warga di lingkungan RW 010 Kelurahan Cilincing, diperbarui secara berkala oleh pengurus.</p>
+      <div class="stat-grid" id="statGridHome"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Program Kerja</div>
+      <h2 class="section-title">Program Unggulan</h2>
+      <p class="section-sub">Enam pilar program Kabinet Akselerasi Karya yang dirancang untuk menjawab kebutuhan pemuda dan masyarakat RW 010.</p>
+      <div class="program-grid" id="programGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROFIL ================= -->
+<section class="view" id="v-profil">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Profil</b></div>
+    <h1>Profil Organisasi</h1>
+    <p>Mengenal lebih dekat Unit Kerja Karang Taruna RW 010 Kelurahan Cilincing dan arah gerak Kabinet Akselerasi Karya.</p>
+  </div></div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Tentang Kami</div>
+      <h2 class="section-title" style="max-width:760px">Unit Kerja Karang Taruna RW. 010 Kelurahan Cilincing</h2>
+      <p class="section-sub" style="max-width:760px">Merupakan organisasi sosial kepemudaan yang menjadi wadah pengembangan generasi muda dalam bidang sosial, ekonomi, pendidikan, olahraga, teknologi, dan pembangunan masyarakat.</p>
+
+      <div class="two-col" style="margin-top:20px">
+        <div class="philosophy-box">
+          <div class="eyebrow" style="color:#F4E3B8"><span style="width:18px;height:2px;background:#C9971F;display:inline-block;border-radius:2px"></span>Filosofi Kabinet</div>
+          <h3>Akselerasi Karya</h3>
+          <p>Akselerasi Karya lahir dari keyakinan bahwa pemuda bukan hanya penerus, tetapi <span class="word">penggerak perubahan</span>. Perubahan yang berarti tidak diukur dari banyaknya kegiatan yang dilaksanakan, melainkan dari karya nyata yang mampu memberikan manfaat bagi masyarakat.</p>
+          <p>Kata <span class="word">Akselerasi</span> melambangkan semangat untuk bergerak lebih cepat, bekerja lebih efektif, beradaptasi terhadap perkembangan zaman, dan menghadirkan solusi atas berbagai persoalan di lingkungan.</p>
+          <p>Sementara <span class="word">Karya</span> merupakan wujud nyata dari pengabdian — setiap program, inovasi, kolaborasi, maupun langkah kecil harus menghasilkan manfaat yang dapat dirasakan masyarakat.</p>
+          <p style="margin-bottom:0">Melalui Kabinet Akselerasi Karya, seluruh pengurus berkomitmen membangun Karang Taruna yang profesional, adaptif, kolaboratif, dan berorientasi pelayanan masyarakat.</p>
+        </div>
+        <div>
+          <div class="vm-card" style="margin-bottom:20px">
+            <h3><span class="chev-row"><span class="chev" style="color:#2F6FED"></span></span> Visi</h3>
+            <p>Mewujudkan Karang Taruna sebagai organisasi kepemudaan yang profesional, adaptif, kolaboratif, dan berdampak nyata dalam membangun masyarakat yang mandiri, berdaya, dan sejahtera.</p>
+          </div>
+          <div class="vm-card">
+            <h3><span class="chev-row"><span class="chev" style="color:#C9971F"></span></span> Misi</h3>
+            <ul class="misi-list" id="misiList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KEGIATAN ================= -->
+<section class="view" id="v-kegiatan">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Kegiatan</b></div>
+    <h1>Dokumentasi Kegiatan</h1>
+    <p>Rekam jejak program dan kegiatan Karang Taruna RW 010 di seluruh bidang kerja.</p>
+  </div></div>
+  <div class="section">
+    <div class="container">
+      <div class="filter-row" id="filterRow"></div>
+      <div class="card-grid" id="kegiatanGrid"></div>
+
+      <div class="eyebrow" style="margin-top:70px">Rekam Jejak</div>
+      <h2 class="section-title">Linimasa Kegiatan</h2>
+      <div class="timeline" id="timelineList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BERITA ================= -->
+<section class="view" id="v-berita">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Berita</b></div>
+    <h1>Portal Berita &amp; Publikasi</h1>
+    <p>Artikel, pengumuman, prestasi, dan kabar kolaborasi dari Karang Taruna RW 010.</p>
+  </div></div>
+  <div class="section">
+    <div class="container">
+      <div class="card-grid" id="newsGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STRUKTUR ================= -->
+<section class="view" id="v-struktur">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Struktur Organisasi</b></div>
+    <h1 style="max-width:760px">Struktur Kepengurusan Unit Kerja Karang Taruna RW. 010 Kelurahan Cilincing</h1>
+    <p>Masa Bakti 2026 – 2029 · Kabinet Akselerasi Karya</p>
+  </div></div>
+  <div class="section">
+    <div class="container">
+
+      <div class="org-level"><div class="org-card pembina"><div class="avatar">MF</div><div class="oname">Fathurozi</div><div class="orole">Pembina</div></div></div>
+      <div class="org-connector"></div>
+
+      <div class="majelis-box">
+        <h5>Majelis Pertimbangan Karang Taruna</h5>
+        <div class="majelis-names" id="majelisNames"></div>
+      </div>
+      <div class="org-connector"></div>
+
+      <div class="org-level">
+        <div class="org-card core"><div class="avatar">HD</div><div class="oname">Herdandi Dwi Putra, A.Md.Kom</div><div class="orole">Ketua</div></div>
+      </div>
+      <div class="org-connector"></div>
+      <div class="org-level">
+        <div class="org-card"><div class="avatar">EE</div><div class="oname">Eki Effendi, S.Tr.T</div><div class="orole">Wakil Ketua I</div></div>
+        <div class="org-card"><div class="avatar">AR</div><div class="oname">Ahmad Ramdani, S.Sos</div><div class="orole">Wakil Ketua II</div></div>
+      </div>
+      <div class="org-level">
+        <div class="org-card"><div class="avatar">DA</div><div class="oname">Dita Amelia, S.I.Kom</div><div class="orole">Sekretaris I</div></div>
+        <div class="org-card"><div class="avatar">PD</div><div class="oname">Paldi, S.Tr.ABI</div><div class="orole">Sekretaris II</div></div>
+        <div class="org-card"><div class="avatar">KA</div><div class="oname">Karin</div><div class="orole">Bendahara</div></div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:60px;justify-content:center;display:flex">Departemen</div>
+      <h2 class="section-title" style="text-align:center">Bidang &amp; Koordinator Departemen</h2>
+      <div class="dept-grid" id="deptGrid"></div>
+
+      <p style="text-align:center;color:var(--slate-light);font-size:13px;margin-top:30px">Departemen bertanda putus-putus masih terbuka untuk formasi kepengurusan periode berjalan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATISTIK ================= -->
+<section class="view" id="v-statistik">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Statistik</b></div>
+    <h1>Dashboard Kependudukan RW 010 Kel. Cilincing</h1>
+    <p>Data demografi warga secara ringkas, disusun untuk mendukung perencanaan program kepemudaan.</p>
+  </div></div>
+  <div class="section">
+    <div class="container">
+      <div class="stat-grid" id="statGridFull" style="grid-template-columns:repeat(3,1fr);margin-bottom:40px"></div>
+
+      <div class="two-col">
+        <div class="chart-panel">
+          <h4>Komposisi Jenis Kelamin</h4>
+          <div class="chart-wrap"><canvas id="chartGender"></canvas></div>
+        </div>
+        <div class="chart-panel">
+          <h4>Sebaran Kelompok Usia</h4>
+          <div class="chart-wrap"><canvas id="chartAge"></canvas></div>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:50px">Rentang Usia</div>
+      <h2 class="section-title">Detail Kelompok Usia</h2>
+      <div class="range-grid" id="rangeGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRANSPARANSI ================= -->
+<section class="view" id="v-transparansi">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Transparansi</b></div>
+    <h1>Transparansi Organisasi</h1>
+    <p>Program kerja, laporan kegiatan, dokumentasi, dan kerja sama disajikan secara terbuka bagi warga RW 010.</p>
+  </div></div>
+  <div class="section">
+    <div class="container">
+      <div id="accordionWrap" style="max-width:820px;margin:0 auto"></div>
+
+      <div class="eyebrow" style="margin-top:70px">Arsip Digital</div>
+      <h2 class="section-title">Dokumen Organisasi</h2>
+      <p class="section-sub">AD/ART, surat keputusan, proposal, dan laporan yang dapat diakses oleh anggota dan warga.</p>
+      <div class="archive-list" id="archiveList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MEMBERSHIP ================= -->
+<section class="view" id="v-membership">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Bergabung</b></div>
+    <h1>Pendaftaran Anggota Karang Taruna</h1>
+    <p>Bergabunglah dengan database pemuda RW 010 dan ambil bagian dalam program Kabinet Akselerasi Karya.</p>
+  </div></div>
+  <div class="section">
+    <div class="container">
+      <form class="form-card" onsubmit="submitMember(event)">
+        <div class="form-row">
+          <div class="field"><label>Nama Lengkap</label><input required placeholder="Nama sesuai KTP"></div>
+          <div class="field"><label>Tempat, Tanggal Lahir</label><input required placeholder="Jakarta, 01 Januari 2005"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Jenis Kelamin</label><select required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
+          <div class="field"><label>No. WhatsApp</label><input required placeholder="08xxxxxxxxxx"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>RT</label><input required placeholder="RT 001"></div>
+          <div class="field"><label>Minat Bidang</label>
+            <select required><option value="">Pilih bidang</option><option>Kewirausahaan &amp; Ekonomi Kreatif</option><option>Organisasi &amp; Kaderisasi</option><option>Olahraga</option><option>Komunikasi Digital</option><option>Pendidikan</option><option>Riset &amp; Teknologi</option><option>Keagamaan</option><option>Humas &amp; Kemitraan</option><option>Pembangunan Masyarakat</option></select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:22px"><label>Motivasi Bergabung</label><textarea rows="3" placeholder="Ceritakan alasan Anda ingin bergabung..."></textarea></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Daftar Sebagai Anggota <i class="chev"></i></button>
+        <p style="text-align:center;font-size:12px;color:var(--slate-light);margin-top:14px">Data pendaftaran akan diverifikasi oleh Sekretariat Karang Taruna RW 010.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAK ================= -->
+<section class="view" id="v-kontak">
+  <div class="page-hero"><div class="container">
+    <div class="crumb">Beranda / <b>Kontak</b></div>
+    <h1>Hubungi Kami</h1>
+    <p>Sampaikan pertanyaan, aspirasi, atau ajakan kolaborasi kepada pengurus Karang Taruna RW 010.</p>
+  </div></div>
+  <div class="section">
+    <div class="container contact-grid">
+      <div class="contact-info-card">
+        <h3>Informasi Kontak</h3>
+        <div class="contact-line"><div class="ic">📍</div><div><b>Sekretariat</b><span>Unit Kerja Karang Taruna RW.010, Kelurahan Cilincing, Jakarta Utara</span></div></div>
+        <div class="contact-line"><div class="ic">✉️</div><div><b>Email Organisasi</b><span>karangtaruna.rw010cilincing@gmail.com</span></div></div>
+        <div class="contact-line"><div class="ic">📞</div><div><b>WhatsApp Sekretariat</b><span>+62 812-0000-0010</span></div></div>
+        <div class="social-row">
+          <a href="#" title="Instagram">📷</a><a href="#" title="TikTok">🎵</a><a href="#" title="YouTube">▶️</a><a href="#" title="Facebook">📘</a>
+        </div>
+        <button class="btn btn-gold" style="margin-top:26px;width:100%;justify-content:center" onclick="showToast('Membuka WhatsApp Sekretariat...')">Chat via WhatsApp <i class="chev"></i></button>
+      </div>
+      <div>
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps?q=Cilincing,Jakarta+Utara&output=embed" loading="lazy"></iframe>
+        </div>
+        <form class="form-card" style="margin-top:20px;padding:28px" onsubmit="submitContact(event)">
+          <div class="form-row">
+            <div class="field"><label>Nama</label><input required placeholder="Nama Anda"></div>
+            <div class="field"><label>Email</label><input type="email" required placeholder="email@contoh.com"></div>
+          </div>
+          <div class="field" style="margin-bottom:18px"><label>Pesan</label><textarea rows="4" required placeholder="Tulis pesan Anda..."></textarea></div>
+          <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Kirim Pesan <i class="chev"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg width="40" height="40" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="22" fill="#123B7A"/><path d="M14 28L21 15L28 28" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" fill="none"/><path d="M16 24H26" stroke="#C9971F" stroke-width="2.4"/></svg>
+          <b>Karang Taruna RW 010<br>Kelurahan Cilincing</b>
+        </div>
+        <p>Kabinet Akselerasi Karya · Masa Bakti 2026–2029. Bergerak cepat, berkarya nyata, berdampak untuk masyarakat.</p>
+      </div>
+      <div><h5>Navigasi</h5><ul>
+        <li><a onclick="go('profil')">Profil</a></li><li><a onclick="go('kegiatan')">Kegiatan</a></li>
+        <li><a onclick="go('berita')">Berita</a></li><li><a onclick="go('struktur')">Struktur</a></li>
+      </ul></div>
+      <div><h5>Layanan</h5><ul>
+        <li><a onclick="go('statistik')">Statistik</a></li><li><a onclick="go('transparansi')">Transparansi</a></li>
+        <li><a onclick="go('membership')">Pendaftaran Anggota</a></li><li><a onclick="go('kontak')">Kontak</a></li>
+      </ul></div>
+      <div><h5>Sekretariat</h5><ul>
+        <li>Kelurahan Cilincing, Jakarta Utara</li><li>karangtaruna.rw010cilincing@gmail.com</li><li>+62 812-0000-0010</li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Karang Taruna RW 010 Kelurahan Cilincing. Seluruh hak dilindungi.</span>
+      <span>Kabinet Akselerasi Karya · 2026–2029</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- DATA (editable via admin mode, in-memory / session only) ---------- */
+let stats = {
+  rumah:1350, kk:1580, penduduk:6049, laki:3062, perempuan:2987,
+  pemuda:1240, anak:890, balita:410, lansia:520
+};
+const ageRanges = [
+  {l:'Balita (0–5 th)', v:410}, {l:'Anak (6–12 th)', v:640},
+  {l:'Remaja (13–17 th)', v:512}, {l:'Pemuda (18–35 th)', v:1240},
+  {l:'Dewasa (36–59 th)', v:2727}, {l:'Lansia (60+ th)', v:520}
+];
+const programs = [
+  {t:'Pendidikan & Literasi Digital', d:'Pelatihan keterampilan digital dan pendampingan belajar bagi pemuda dan anak-anak RW 010.', i:'🎓'},
+  {t:'Pengembangan UMKM Pemuda', d:'Inkubasi usaha rintisan pemuda melalui pelatihan, permodalan, dan akses pasar.', i:'💼'},
+  {t:'Kegiatan Sosial Masyarakat', d:'Aksi sosial, bakti lingkungan, dan gotong royong bersama warga RW 010.', i:'🤝'},
+  {t:'Olahraga Kepemudaan', d:'Liga dan turnamen olahraga rutin sebagai wadah pembinaan karakter pemuda.', i:'⚽'},
+  {t:'Digitalisasi Organisasi', d:'Sistem administrasi, database, dan pelayanan kepemudaan berbasis teknologi.', i:'💻'},
+  {t:'Kolaborasi & Kemitraan', d:'Kerja sama dengan pemerintah, dunia usaha, dan komunitas untuk memperluas dampak program.', i:'🌐'}
+];
+const misi = [
+  'Membangun tata kelola organisasi yang profesional, transparan, akuntabel, dan berbasis sistem.',
+  'Mengembangkan kapasitas pemuda melalui pendidikan, pelatihan, kewirausahaan, dan pengembangan keterampilan sesuai kebutuhan zaman.',
+  'Mendorong lahirnya karya, inovasi, dan program yang memberikan manfaat nyata bagi masyarakat.',
+  'Memperkuat kolaborasi dengan pemerintah, dunia usaha, komunitas, dan seluruh elemen masyarakat.',
+  'Mengoptimalkan teknologi informasi sebagai sarana pelayanan, komunikasi, dan pengembangan organisasi.',
+  'Menumbuhkan semangat gotong royong, kepedulian sosial, toleransi, dan partisipasi aktif pemuda.'
+];
+const categories = ['Semua','Sosial Kemasyarakatan','Pendidikan','Olahraga','Keagamaan','Kewirausahaan','Digitalisasi','Lingkungan'];
+const kegiatan = [
+  {t:'Gotong Royong Kebersihan Lingkungan', c:'Lingkungan', d:'12 Jan 2026', loc:'RT 003–006', p:'Kerja bakti membersihkan saluran air dan area publik RW 010.'},
+  {t:'Pelatihan Desain Digital untuk Pemuda', c:'Digitalisasi', d:'28 Jan 2026', loc:'Balai Warga', p:'Workshop dasar desain grafis dan konten media sosial.'},
+  {t:'Turnamen Futsal Antar RT', c:'Olahraga', d:'09 Feb 2026', loc:'Lapangan RW 010', p:'Kompetisi futsal tahunan pemuda antar RT se-RW 010.'},
+  {t:'Pengajian Rutin Bulanan', c:'Keagamaan', d:'15 Feb 2026', loc:'Musholla RW 010', p:'Kajian rutin bersama tokoh agama dan warga sekitar.'},
+  {t:'Bimbingan Belajar Anak Rusun', c:'Pendidikan', d:'22 Feb 2026', loc:'Pos RW 010', p:'Program belajar sore untuk anak-anak jenjang SD–SMP.'},
+  {t:'Pelatihan Kewirausahaan UMKM Muda', c:'Kewirausahaan', d:'05 Mar 2026', loc:'Aula Serbaguna', p:'Pendampingan usaha rintisan bagi pemuda RW 010.'},
+  {t:'Bakti Sosial Warga Kurang Mampu', c:'Sosial Kemasyarakatan', d:'18 Mar 2026', loc:'RT 001–002', p:'Pembagian sembako dan pendataan warga membutuhkan.'},
+  {t:'Sosialisasi Pemilahan Sampah', c:'Lingkungan', d:'30 Mar 2026', loc:'Seluruh RT', p:'Edukasi pemilahan sampah organik dan anorganik.'}
+];
+const news = [
+  {cat:'Prestasi', t:'Tim Futsal RW 010 Raih Juara di Turnamen Kecamatan', d:'02 Mar 2026', s:'Prestasi membanggakan pemuda RW 010 di kompetisi tingkat kecamatan Cilincing.'},
+  {cat:'Pengumuman', t:'Pembukaan Pendaftaran Anggota Baru Kabinet Akselerasi Karya', d:'20 Feb 2026', s:'Kesempatan bagi pemuda RW 010 untuk bergabung dan berkontribusi aktif.'},
+  {cat:'Kolaborasi', t:'Karang Taruna Jalin Kerja Sama dengan UMKM Lokal', d:'12 Feb 2026', s:'Kemitraan strategis untuk mendorong pertumbuhan ekonomi kreatif pemuda.'},
+  {cat:'Kegiatan', t:'Sukses Gelar Pelatihan Literasi Digital Angkatan Pertama', d:'30 Jan 2026', s:'Puluhan pemuda mengikuti pelatihan dasar keterampilan digital.'},
+  {cat:'Artikel', t:'Mengenal Filosofi di Balik Nama Kabinet Akselerasi Karya', d:'18 Jan 2026', s:'Menelusuri makna dan semangat yang mendasari arah gerak kabinet baru.'},
+  {cat:'Pengumuman', t:'Jadwal Program Kerja Triwulan I Resmi Dirilis', d:'05 Jan 2026', s:'Rincian agenda kegiatan Karang Taruna RW 010 untuk tiga bulan pertama.'}
+];
+const majelis = ['Saumul Hidayat','Jumadi','Ust. Unus','Amik','Fiski Hazami','Ano','Imam Al Ghifari'];
+const dept = [
+  {n:'Siti Nadatul Syahro', r:'Kewirausahaan & Ekonomi Kreatif', open:false},
+  {n:'Albi', r:'Organisasi & Kaderisasi', open:false},
+  {n:'Aris Maulana', r:'Olahraga', open:false},
+  {n:'Haidir Prabu Perdana Wijaksono, S.Ds', r:'Komunikasi Digital', open:false},
+  {n:'Arief Hardiansyah, S.T', r:'Pendidikan', open:false},
+  {n:'—', r:'Riset & Teknologi', open:true},
+  {n:'—', r:'Keagamaan', open:true},
+  {n:'—', r:'Hubungan Masyarakat & Kemitraan', open:true},
+  {n:'—', r:'Luar Negeri', open:true},
+  {n:'Wawan Gunawan', r:'Pembangunan Masyarakat', open:false}
+];
+const transparansi = [
+  {t:'Program Kerja', b:'Dokumen rencana kerja tahunan Kabinet Akselerasi Karya mencakup seluruh bidang: pendidikan, kewirausahaan, sosial, olahraga, digitalisasi, dan kemitraan, lengkap dengan target dan indikator capaian per triwulan.'},
+  {t:'Laporan Kegiatan', b:'Rekapitulasi laporan pelaksanaan setiap kegiatan, termasuk jumlah peserta, anggaran yang digunakan, dan dokumentasi hasil, disusun oleh Sekretariat setiap bulan.'},
+  {t:'Dokumentasi', b:'Arsip foto dan video seluruh kegiatan Karang Taruna RW 010 yang dapat diakses warga sebagai bentuk keterbukaan informasi organisasi.'},
+  {t:'Kerjasama', b:'Daftar mitra kolaborasi organisasi, meliputi instansi pemerintah kelurahan/kecamatan, pelaku UMKM lokal, komunitas pemuda, dan lembaga sosial lainnya.'}
+];
+const archive = [
+  {n:'AD/ART Karang Taruna RW 010', m:'PDF · Anggaran Dasar & Rumah Tangga'},
+  {n:'Surat Keputusan Kepengurusan 2026–2029', m:'PDF · SK Pengangkatan Pengurus'},
+  {n:'Proposal Program Kerja Tahun 2026', m:'PDF · Rencana Kerja Tahunan'},
+  {n:'Laporan Pertanggungjawaban Triwulan I', m:'PDF · Laporan Kegiatan & Keuangan'}
+];
+
+/* ---------- VIEW ROUTER ---------- */
+function go(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('v-'+v).classList.add('active');
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.toggle('active', b.dataset.v===v));
+  document.getElementById('navLinks').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- RENDER ---------- */
+function iconSvg(path){return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${path}</svg>`;}
+const ICON_HOUSE = iconSvg('<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>');
+const ICON_USERS = iconSvg('<circle cx="9" cy="8" r="3"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><circle cx="18" cy="8" r="2.5"/><path d="M22 21v-1.5a4 4 0 00-3-3.87"/>');
+const ICON_PEOPLE = iconSvg('<path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><circle cx="10" cy="7" r="4"/>');
+const ICON_MALE = iconSvg('<circle cx="10" cy="14" r="5"/><path d="M15 9l6-6M15 3h6v6"/>');
+const ICON_FEMALE = iconSvg('<circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/>');
+const ICON_TEEN = iconSvg('<path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>');
+const ICON_CHILD = iconSvg('<circle cx="12" cy="8" r="4"/><path d="M6 21c0-3.3 2.7-6 6-6s6 2.7 6 6"/>');
+const ICON_BABY = iconSvg('<circle cx="12" cy="10" r="4"/><path d="M8 20c0-2 1.5-4 4-4s4 2 4 4"/><path d="M9 10c0-1.5 1.5-2 3-2"/>');
+const ICON_ELDER = iconSvg('<circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/><path d="M9 21v-4"/>');
+
+const statMeta = [
+  {k:'rumah', l:'Jumlah Rumah', icon:ICON_HOUSE},
+  {k:'kk', l:'Jumlah Kepala Keluarga', icon:ICON_USERS},
+  {k:'penduduk', l:'Total Penduduk', icon:ICON_PEOPLE},
+  {k:'laki', l:'Jumlah Laki-laki', icon:ICON_MALE},
+  {k:'perempuan', l:'Jumlah Perempuan', icon:ICON_FEMALE},
+  {k:'pemuda', l:'Jumlah Pemuda', icon:ICON_TEEN},
+  {k:'anak', l:'Jumlah Anak-anak', icon:ICON_CHILD},
+  {k:'balita', l:'Jumlah Balita', icon:ICON_BABY},
+  {k:'lansia', l:'Jumlah Lansia', icon:ICON_ELDER},
+];
+
+function fmt(n){return n.toLocaleString('id-ID');}
+
+function renderStatGrid(elId, keys){
+  const el = document.getElementById(elId);
+  el.innerHTML = keys.map(k=>{
+    const m = statMeta.find(s=>s.k===k);
+    return `<div class="stat-card">
+      <div class="icon">${m.icon}</div>
+      <div class="stat-num" data-key="${m.k}">${adminMode?`<input type="number" value="${stats[m.k]}" oninput="updateStat('${m.k}',this.value)">`:fmt(stats[m.k])}</div>
+      <div class="stat-label">${m.l}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderAll(){
+  renderStatGrid('statGridHome', ['penduduk','pemuda','kk','rumah','anak','lansia']);
+  renderStatGrid('statGridFull', statMeta.map(s=>s.k));
+
+  document.getElementById('programGrid').innerHTML = programs.map(p=>`
+    <div class="program-card"><div class="program-icon" style="font-size:20px">${p.i}</div><h4>${p.t}</h4><p>${p.d}</p></div>
+  `).join('');
+
+  document.getElementById('misiList').innerHTML = misi.map((m,i)=>`
+    <li><div class="misi-num">${i+1}</div><div>${m}</div></li>
+  `).join('');
+
+  document.getElementById('filterRow').innerHTML = categories.map((c,i)=>`
+    <button class="chip ${i===0?'active':''}" data-c="${c}" onclick="filterKegiatan('${c}',this)">${c}</button>
+  `).join('');
+  renderKegiatan('Semua');
+
+  document.getElementById('timelineList').innerHTML = kegiatan.slice().reverse().map(k=>`
+    <div class="timeline-item"><div class="tdate">${k.d}</div><h5>${k.t}</h5><p>${k.loc} · ${k.c}</p></div>
+  `).join('');
+
+  document.getElementById('newsGrid').innerHTML = news.map(n=>`
+    <div class="news-card" onclick="showToast('Membuka artikel: ${n.t.replace(/'/g,"")}')">
+      <div class="news-thumb"><span class="cat">${n.cat}</span></div>
+      <div class="news-body"><div class="news-date">${n.d}</div><h4>${n.t}</h4><p>${n.s}</p><span class="news-link">Baca selengkapnya →</span></div>
+    </div>
+  `).join('');
+
+  document.getElementById('majelisNames').innerHTML = majelis.map(n=>`<span>${n}</span>`).join('');
+
+  document.getElementById('deptGrid').innerHTML = dept.map(d=>`
+    <div class="dept-card ${d.open?'open':''}">
+      <div class="avatar">${d.n==='—'?'?':d.n.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
+      <div><div class="dname">${d.n}</div><div class="drole">${d.r}${d.open?' (Formasi Terbuka)':''}</div></div>
+    </div>
+  `).join('');
+
+  document.getElementById('rangeGrid').innerHTML = ageRanges.map(r=>`
+    <div class="range-card"><div class="rn">${fmt(r.v)}</div><div class="rl">${r.l}</div></div>
+  `).join('');
+
+  document.getElementById('accordionWrap').innerHTML = transparansi.map((t,i)=>`
+    <div class="accordion ${i===0?'open':''}">
+      <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><h4>${t.t}</h4><div class="plus">+</div></div>
+      <div class="acc-body"><div class="acc-body-in">${t.b}</div></div>
+    </div>
+  `).join('');
+
+  document.getElementById('archiveList').innerHTML = archive.map(a=>`
+    <div class="archive-item"><div class="fic">📄</div><div><div class="fname">${a.n}</div><div class="fmeta">${a.m}</div></div></div>
+  `).join('');
+
+  renderCharts();
+}
+
+function renderKegiatan(cat){
+  const filtered = cat==='Semua' ? kegiatan : kegiatan.filter(k=>k.c===cat);
+  document.getElementById('kegiatanGrid').innerHTML = filtered.map(k=>`
+    <div class="kegiatan-card">
+      <div class="kegiatan-thumb"><span>${k.c}</span></div>
+      <div class="kegiatan-body"><h4>${k.t}</h4><div class="kegiatan-meta"><span>📅 ${k.d}</span><span>📍 ${k.loc}</span></div><p>${k.p}</p></div>
+    </div>
+  `).join('') || '<p style="color:var(--slate)">Belum ada kegiatan pada kategori ini.</p>';
+}
+function filterKegiatan(cat, btn){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderKegiatan(cat);
+}
+
+/* ---------- CHARTS ---------- */
+let genderChart, ageChart;
+function renderCharts(){
+  const ctxG = document.getElementById('chartGender');
+  const ctxA = document.getElementById('chartAge');
+  if(genderChart) genderChart.destroy();
+  if(ageChart) ageChart.destroy();
+  genderChart = new Chart(ctxG, {
+    type:'doughnut',
+    data:{labels:['Laki-laki','Perempuan'], datasets:[{data:[stats.laki, stats.perempuan], backgroundColor:['#2F6FED','#C9971F'], borderWidth:0}]},
+    options:{plugins:{legend:{position:'bottom', labels:{font:{family:'Plus Jakarta Sans', size:12.5}, padding:16}}}, cutout:'68%'}
+  });
+  ageChart = new Chart(ctxA, {
+    type:'bar',
+    data:{labels:ageRanges.map(r=>r.l.split(' ')[0]), datasets:[{data:ageRanges.map(r=>r.v), backgroundColor:'#123B7A', borderRadius:6, maxBarThickness:36}]},
+    options:{plugins:{legend:{display:false}}, scales:{x:{grid:{display:false}}, y:{grid:{color:'#EEF3FE'}}}}
+  });
+}
+
+function updateStat(key, val){
+  stats[key] = parseInt(val)||0;
+  renderCharts();
+  document.getElementById('fk1').textContent = fmt(stats.penduduk);
+  document.getElementById('fk2').textContent = fmt(stats.pemuda);
+}
+
+/* ---------- ADMIN MODE ---------- */
+let adminMode = false;
+function toggleAdmin(){
+  adminMode = !adminMode;
+  document.getElementById('adminToggle').classList.toggle('on', adminMode);
+  document.getElementById('adminbar').classList.toggle('show', adminMode);
+  renderStatGrid('statGridHome', ['penduduk','pemuda','kk','rumah','anak','lansia']);
+  renderStatGrid('statGridFull', statMeta.map(s=>s.k));
+  showToast(adminMode? 'Mode Admin diaktifkan' : 'Mode Admin dinonaktifkan');
+}
+
+/* ---------- FORMS / TOAST ---------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function submitMember(e){ e.preventDefault(); showToast('Pendaftaran berhasil dikirim ke Sekretariat'); e.target.reset(); }
+function submitContact(e){ e.preventDefault(); showToast('Pesan berhasil dikirim'); e.target.reset(); }
+
+/* ---------- NAV SCROLL ---------- */
+window.addEventListener('scroll', ()=>document.getElementById('nav').classList.toggle('scrolled', window.scrollY>10));
+
+/* ---------- INIT ---------- */
+renderAll();
+</script>
+</body>
+</html>
